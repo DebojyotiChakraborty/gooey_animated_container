@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'gooey_menu.dart';
-import 'gooey_menu_legacy.dart';
+import 'gooey_animated_fab.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Gooey Menu Demo',
+      title: 'Gooey FAB Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -23,48 +23,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
-enum _Demo { original, draggable }
-
-class GooeyFab extends StatefulWidget {
+class GooeyFab extends StatelessWidget {
   const GooeyFab({super.key});
 
   @override
-  State<GooeyFab> createState() => _GooeyFabState();
-}
-
-class _GooeyFabState extends State<GooeyFab> {
-  _Demo _demo = _Demo.draggable;
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gooey Context Menu'),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(56),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: SegmentedButton<_Demo>(
-              segments: const [
-                ButtonSegment(value: _Demo.original, label: Text('Original')),
-                ButtonSegment(value: _Demo.draggable, label: Text('Draggable (new)')),
-              ],
-              selected: {_demo},
-              onSelectionChanged: (s) => setState(() => _demo = s.first),
-            ),
-          ),
-        ),
+    final theme = Theme.of(context);
+    return FloatingActionButtonTheme(
+      data: theme.floatingActionButtonTheme.copyWith(
+        backgroundColor: Colors.black,
+        foregroundColor: theme.colorScheme.onPrimary,
+        elevation: 0,
+        shape: const CircleBorder(),
       ),
-      // Rebuild from scratch when switching so each demo starts clean.
-      body: switch (_demo) {
-        // Original: a fixed, centered inline morph.
-        _Demo.original => const Padding(
-            padding: EdgeInsets.all(24),
-            child: Align(alignment: Alignment.center, child: LegacyGooeyMenu()),
-          ),
-        // New: full-bleed drag surface.
-        _Demo.draggable => const GooeyMenu(),
-      },
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Gooey FAB')),
+        // Full-bleed drag surface for the draggable gooey context menu.
+        body: const GooeyMenu(),
+        floatingActionButton: const GooeyAnimatedFab(),
+      ),
     );
   }
 }
