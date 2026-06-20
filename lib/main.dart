@@ -1,7 +1,4 @@
-import 'package:cue/cue.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:gooey/gooey.dart';
 
 import 'gooey_menu.dart';
 import 'gooey_animated_fab.dart';
@@ -41,18 +38,10 @@ class GooeyFab extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(title: const Text('Gooey FAB')),
-        body: const SizedBox.expand(
-          child: Padding(
-            padding: EdgeInsets.all(24),
-            child: Align(
-              alignment: Alignment.center,
-              child: GooeyMenu(),
-            ),
-          ),
-        ),
+        // Full-bleed drag surface for the draggable gooey context menu.
+        body: const GooeyMenu(),
         floatingActionButton: const GooeyAnimatedFab(),
       ),
     );
   }
 }
-
